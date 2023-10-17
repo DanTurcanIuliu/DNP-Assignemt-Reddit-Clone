@@ -5,8 +5,6 @@ using Shared.Models;
 
 namespace WebAPI.Controllers;
 
-public class UserController
-{
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -33,4 +31,3 @@ public class UserController
             }
         }
     }
-}
