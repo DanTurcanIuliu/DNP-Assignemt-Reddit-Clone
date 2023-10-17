@@ -6,5 +6,4 @@ public interface IPostDao
 {
     Task<Post> CreateAsync(Post post);
     
-    Task<User?> GetByIdAsync(int id);
 }

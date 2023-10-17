@@ -18,21 +18,21 @@ public class PostLogic: IPostLogic
 
     public async Task<Post> CreateAsync(PostCreateDto dto)
     {
-        User? user = await userDao.GetByIdAsync(dto.OwnerId);
+        User? user = await userDao.GetByIdAsync(dto.AuthorId);
         if (user == null)
         {
-            throw new Exception($"User with id {dto.OwnerId} was not found.");
+            throw new Exception($"User with id {dto.AuthorId} was not found.");
         }
 
-        ValidateTodo(dto);
-        Todo todo = new Todo(user, dto.Title);
-        Todo created = await todoDao.CreateAsync(todo);
+        ValidatePost(dto);
+        Post post = new Post(user, dto.Title, dto.Body);
+        Post created = await postDao.CreateAsync(post);
         return created;
     }
 
-    private void ValidateTodo(TodoCreationDto dto)
+    private void ValidatePost(PostCreateDto dto)
     {
         if (string.IsNullOrEmpty(dto.Title)) throw new Exception("Title cannot be empty.");
-        // other validation stuff
+        if (string.IsNullOrEmpty(dto.Body)) throw new Exception("Body cannot be empty.");
     }
 }
