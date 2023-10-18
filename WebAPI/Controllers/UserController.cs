@@ -1,4 +1,5 @@
 ﻿using Application.Logic_Interfaces;
+using Application.Provider_Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Shared.DTOs;
 using Shared.Models;
@@ -11,10 +12,12 @@ namespace WebAPI.Controllers;
     public class UsersController : ControllerBase
     {
         private readonly IUserLogic userLogic;
+        private readonly IUserProvider userProvider;
 
-        public UsersController(IUserLogic userLogic)
+        public UsersController(IUserLogic userLogic, IUserProvider userProvider)
         {
             this.userLogic = userLogic;
+            this.userProvider = userProvider;
         }
 
         [HttpPost]
@@ -24,6 +27,22 @@ namespace WebAPI.Controllers;
             {
                 User user = await userLogic.CreateAsync(dto);
                 return Created($"/users/{user.Id}", user);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+        }
+        
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetAsync([FromQuery] string? username)
+        {
+            try
+            {
+                SearchUserParametersDto parameters = new(username);
+                IEnumerable<User> users = await userProvider.GetAsync(parameters);
+                return Ok(users);
             }
             catch (Exception e)
             {

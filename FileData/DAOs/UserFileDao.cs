@@ -1,9 +1,11 @@
 ﻿using Application.Dao_Interfaces;
+using Application.Provider_Interfaces;
+using Shared.DTOs;
 using Shared.Models;
 
 namespace FileData.DAOs;
 
-public class UserFileDao : IUserDao
+public class UserFileDao : IUserDao, IUserProvider
 {
     private readonly FileContext context;
 
@@ -43,5 +45,16 @@ public class UserFileDao : IUserDao
             u.Id == id
         );
         return Task.FromResult(existing);
+    }
+
+    public Task<IEnumerable<User>> GetAsync(SearchUserParametersDto searchParameters)
+    {
+        IEnumerable<User> users = context.Users.AsEnumerable();
+        if (searchParameters.UsernameContains != null)
+        {
+            users = context.Users.Where(u => u.UserName.Contains(searchParameters.UsernameContains, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return Task.FromResult(users);
     }
 }

@@ -1,6 +1,7 @@
 using Application.Dao_Interfaces;
 using Application.Logic;
 using Application.Logic_Interfaces;
+using Application.Provider_Interfaces;
 using FileData;
 using FileData.DAOs;
 
@@ -17,6 +18,7 @@ builder.Services.AddScoped<FileContext>();
 
 builder.Services.AddScoped<IUserDao, UserFileDao>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
+builder.Services.AddScoped<IUserProvider, UserFileDao>();
 
 builder.Services.AddScoped<IPostDao, PostFileDao>();
 builder.Services.AddScoped<IPostLogic, PostLogic>();
