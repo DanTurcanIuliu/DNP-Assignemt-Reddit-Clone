@@ -1,9 +1,11 @@
 ﻿using Application.Dao_Interfaces;
+using Application.Provider_Interfaces;
+using Shared.DTOs;
 using Shared.Models;
 
 namespace FileData.DAOs;
 
-public class PostFileDao:IPostDao
+public class PostFileDao:IPostDao, IPostProvider
 {
     private readonly FileContext context;
 
@@ -35,5 +37,35 @@ public class PostFileDao:IPostDao
             p.Id == dtoPostId
         );
         return Task.FromResult(existing);
+    }
+    
+    public Task<IEnumerable<Post>> GetAsync(SearchPostParametersDto searchParams)
+    {
+        IEnumerable<Post> result = context.Posts.AsEnumerable();
+
+        if (!string.IsNullOrEmpty(searchParams.Username))
+        {
+            result = context.Posts.Where(post =>
+                post.Author.UserName.Equals(searchParams.Username, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (searchParams.UserId != null)
+        {
+            result = result.Where(t => t.Author.Id == searchParams.UserId);
+        }
+
+        if (!string.IsNullOrEmpty(searchParams.TitleContains))
+        {
+            result = result.Where(t =>
+                t.Title.Contains(searchParams.TitleContains, StringComparison.OrdinalIgnoreCase));
+        }
+        
+        if (!string.IsNullOrEmpty(searchParams.BodyContains))
+        {
+            result = result.Where(t =>
+                t.Body.Contains(searchParams.BodyContains, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return Task.FromResult(result);
     }
 }

@@ -22,9 +22,11 @@ builder.Services.AddScoped<IUserProvider, UserFileDao>();
 
 builder.Services.AddScoped<IPostDao, PostFileDao>();
 builder.Services.AddScoped<IPostLogic, PostLogic>();
+builder.Services.AddScoped<IPostProvider, PostFileDao>();
 
 builder.Services.AddScoped<ICommentDao, CommentFileDao>();
 builder.Services.AddScoped<ICommentLogic, CommentLogic>();
+builder.Services.AddScoped<ICommentProvider,CommentFileDao>();
 
 var app = builder.Build();
 

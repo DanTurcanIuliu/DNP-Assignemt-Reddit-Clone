@@ -1,6 +1,9 @@
-﻿namespace Application.Provider_Interfaces;
+﻿using Shared.DTOs;
+using Shared.Models;
 
-public class IPostProvider
+namespace Application.Provider_Interfaces;
+
+public interface IPostProvider
 {
-    
+    Task<IEnumerable<Post>> GetAsync(SearchPostParametersDto searchParameters);
 }
