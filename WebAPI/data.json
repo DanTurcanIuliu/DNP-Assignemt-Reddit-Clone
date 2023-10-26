@@ -35,6 +35,10 @@
     {
       "Id": 9,
       "UserName": "dan45"
+    },
+    {
+      "Id": 10,
+      "UserName": "ghth"
     }
   ],
   "Posts": [
@@ -73,6 +77,15 @@
       },
       "Title": "Forgfeoooood",
       "Body": "rwgfwteh"
+    },
+    {
+      "Id": 5,
+      "Author": {
+        "Id": 1,
+        "UserName": "Dan"
+      },
+      "Title": "kakakakakak",
+      "Body": "pppppppppp"
     }
   ],
   "Comments": [
