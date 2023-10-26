@@ -15,4 +15,10 @@
       <ProjectReference Include="..\HttpClients\HttpClients.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="Pages\ViewUsers.css">
+        <DependentUpon>ViewUsers.razor</DependentUpon>
+      </None>
+    </ItemGroup>
+
 </Project>
