@@ -2,7 +2,7 @@
 
 namespace HttpClients.ClientInterfaces;
 
-public interface ITodoService
+public interface IPostService
 {
     Task CreateAsync(PostCreateDto dto);
 }

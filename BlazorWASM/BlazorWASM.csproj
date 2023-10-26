@@ -19,6 +19,9 @@
       <None Update="Pages\ViewUsers.css">
         <DependentUpon>ViewUsers.razor</DependentUpon>
       </None>
+      <None Update="Pages\CreatePost.css">
+        <DependentUpon>CreatePost.razor</DependentUpon>
+      </None>
     </ItemGroup>
 
 </Project>
