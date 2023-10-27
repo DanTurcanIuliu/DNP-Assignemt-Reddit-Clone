@@ -4,8 +4,47 @@
 @using global::Shared.Models
 @using System.Runtime.CompilerServices
 @inject IPostService postService
+@inject NavigationManager navMgr
 
 <h3>Posts</h3>
+
+<div class="filter-bar">
+    <div class="filters-container">
+        <img src="icons/@(doShowFilters ? "clear_" : "")funnel.png" class="funnel" @onclick="@(() => doShowFilters = !doShowFilters)" alt="Funnel"/>
+        @if (doShowFilters)
+        {
+            <div class="filter">
+                <label>Username:</label>
+                <input type="text" @bind="usernameFilter"/>
+            </div>
+            <div class="filter">
+                <label>User id:</label>
+                <input type="number" @bind="userIdFilter"/>
+            </div>
+            <div class="filter">
+                <label>Title contains:</label>
+                <input type="text" @bind="titleContainsFilter"/>
+            </div>
+            <div class="filter">
+                <label>Body contains:</label>
+                <input type="text" @bind="bodyContainsFilter"/>
+            </div>
+            <div>
+                <button @onclick="LoadPosts">Load</button>
+            </div>
+        }
+        @if (!doShowFilters)
+        {
+            usernameFilter = null;
+            userIdFilter = null;
+            titleContainsFilter = null;
+            bodyContainsFilter = null;
+            <button @onclick="LoadPosts">Reload</button>
+        }
+    </div>
+</div>
+
+
 
 @if (!string.IsNullOrEmpty(msg))
 {
@@ -40,13 +79,33 @@ else
 @code {
     private IEnumerable<Post>? posts;
     private string msg = "";
+    private bool doShowFilters = false;
+    
+    private string? usernameFilter;
+    private int? userIdFilter;
+    private string? titleContainsFilter;
+    private string? bodyContainsFilter;
 
     protected override async Task OnInitializedAsync()
     {
         msg = "";
         try
         {
-            posts = await postService.GetAsync(null,null,null,null);
+            posts = await postService.GetAsync(null, null, null, null);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+    
+    private  async Task LoadPosts()
+    {
+        msg = "";
+        try
+        {
+            posts = await postService.GetAsync(usernameFilter, userIdFilter, titleContainsFilter, bodyContainsFilter);
         }
         catch (Exception e)
         {
