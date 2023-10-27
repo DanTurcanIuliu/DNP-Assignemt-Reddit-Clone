@@ -24,28 +24,18 @@ else if (!posts.Any())
 }
 else
 {
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Todo ID</th>
-            <th>Author UserName</th>
-            <th>Title</th>
-            <th>Body</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in posts)
-        {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Author.UserName</td>
-                <td>@item.Title</td>
-                <td>@item.Body</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+    @foreach (var item in posts)
+    {
+        <div>
+            <p>Author: @item.Author.UserName</p>
+            <p>Title: @item.Title</p>
+            <p>Content: @item.Body</p>
+            <hr>
+        </div>
+    }
 }
+
+
 
 @code {
     private IEnumerable<Post>? posts;

@@ -94,7 +94,7 @@
         {
             PostCreateDto dto = new((int)selectedUserId, postTitle, postBody);
             await postService.CreateAsync(dto);
-            navMgr.NavigateTo("/");
+            navMgr.NavigateTo("http://localhost:5296/ViewPosts");
         }
         catch (Exception e)
         {
