@@ -4,6 +4,7 @@
 @using global::Shared.Models
 @using System.Runtime.CompilerServices
 @inject IPostService postService
+@inject ICommentService commentService
 @inject NavigationManager navMgr
 
 <h3>Posts</h3>
@@ -44,15 +45,6 @@
     </div>
 </div>
 
-
-
-@if (!string.IsNullOrEmpty(msg))
-{
-    <div>
-        <span>@msg</span>
-    </div>
-}
-
 @if (posts == null)
 {
     <span>Loading..</span>
@@ -74,10 +66,38 @@ else
     }
 }
 
+ @if (comments == null)
+    {
+        <span>Loading Comments..</span>
+    }
+    else if (!comments.Any())
+    {
+        <p>No Comments to display</p>
+    }
+    else 
+    {
+        foreach (var itemComment in comments)
+        {
+            <div>
+                <p>Author: @itemComment.Id</p>
+                <p>Author: @itemComment.Body</p>
+            </div>
+        }
+    }
+    
+        
+
+@if (!string.IsNullOrEmpty(msg))
+{
+    <div>
+        <span>@msg</span>
+    </div>
+}
 
 
 @code {
     private IEnumerable<Post>? posts;
+    private IEnumerable<Comment>? comments;
     private string msg = "";
     private bool doShowFilters = false;
     
@@ -85,13 +105,14 @@ else
     private int? userIdFilter;
     private string? titleContainsFilter;
     private string? bodyContainsFilter;
-
+    
     protected override async Task OnInitializedAsync()
     {
         msg = "";
         try
         {
             posts = await postService.GetAsync(null, null, null, null);
+            comments = await commentService.GetAsync(null, 1, null, null, null);
         }
         catch (Exception e)
         {
@@ -106,6 +127,7 @@ else
         try
         {
             posts = await postService.GetAsync(usernameFilter, userIdFilter, titleContainsFilter, bodyContainsFilter);
+            comments = await commentService.GetAsync(null, null, null, null, null);
         }
         catch (Exception e)
         {

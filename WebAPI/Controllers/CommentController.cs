@@ -8,12 +8,12 @@ namespace WebAPI.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class CommentsController : ControllerBase
+public class CommentController : ControllerBase
 {
     private readonly ICommentLogic commentLogic;
     private readonly ICommentProvider commentProvider;
 
-    public CommentsController(ICommentLogic commentLogic, ICommentProvider commentProvider)
+    public CommentController(ICommentLogic commentLogic, ICommentProvider commentProvider)
     {
         this.commentLogic = commentLogic;
         this.commentProvider = commentProvider;
@@ -25,7 +25,7 @@ public class CommentsController : ControllerBase
         try
         {
             Comment created = await commentLogic.CreateAsync(dto);
-            return Created($"/comments/{created.Id}", created);
+            return Created($"/comment/{created.Id}", created);
         }
         catch (Exception e)
         {

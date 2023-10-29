@@ -11,5 +11,6 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://localhost:5249") });
 builder.Services.AddScoped<IUserService, UserHttpClient>();
 builder.Services.AddScoped<IPostService, PostHttpClient>();
+builder.Services.AddScoped<ICommentService, CommentHttpClient>();
 
 await builder.Build().RunAsync();
