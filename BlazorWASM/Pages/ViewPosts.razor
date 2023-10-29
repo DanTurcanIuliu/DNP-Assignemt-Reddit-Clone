@@ -61,6 +61,18 @@ else
             <p>Author: @item.Author.UserName</p>
             <p>Title: @item.Title</p>
             <p>Content: @item.Body</p>
+             @if (comments != null)
+             {
+                @foreach (var comment in comments)
+                {
+                    if (comment.Reference.Id == item.Id)
+                    {
+                        <div>
+                            <p>@comment.Author.UserName :  @comment.Body</p>
+                        </div>
+                    }
+                }
+             }
             <hr>
         </div>
     }
@@ -69,20 +81,6 @@ else
  @if (comments == null)
     {
         <span>Loading Comments..</span>
-    }
-    else if (!comments.Any())
-    {
-        <p>No Comments to display</p>
-    }
-    else 
-    {
-        foreach (var itemComment in comments)
-        {
-            <div>
-                <p>Author: @itemComment.Id</p>
-                <p>Author: @itemComment.Body</p>
-            </div>
-        }
     }
     
         
