@@ -26,19 +26,19 @@ public class CommentLogic:ICommentLogic
             throw new Exception($"User with id {dto.AuthorId} was not found.");
         }
         
-        Post? post = await postDao.GetByIdAsync(dto.AuthorId);
+        Post? post = await postDao.GetByIdAsync(dto.PostId);
         if (user == null)
         {
             throw new Exception($"Post with id {dto.PostId} was not found.");
         }
 
-        ValidateTodo(dto);
+        ValidateComment(dto);
         Comment comment = new Comment(user, post, dto.Body);
         Comment created = await commentDao.CreateAsync(comment);
         return created;
     }
 
-    private void ValidateTodo(CommentCreateDto dto)
+    private void ValidateComment(CommentCreateDto dto)
     {
         if (string.IsNullOrEmpty(dto.Body)) throw new Exception("Comment cannot be empty.");
     }

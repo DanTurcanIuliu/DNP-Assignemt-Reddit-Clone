@@ -37,8 +37,8 @@ public class CommentFileDao:ICommentDao, ICommentProvider
 
         if (!string.IsNullOrEmpty(searchParams.Username))
         {
-            result = context.Comments.Where(todo =>
-                todo.Author.UserName.Equals(searchParams.Username, StringComparison.OrdinalIgnoreCase));
+            result = context.Comments.Where(t =>
+                t.Author.UserName.Equals(searchParams.Username, StringComparison.OrdinalIgnoreCase));
         }
 
         if (searchParams.UserId != null)

@@ -1,0 +1,130 @@
+﻿@page "/ViewPost/{childId:int}"
+@using HttpClients.ClientInterfaces
+@using global::Shared.Models
+@using global::Shared.DTOs
+@inject IPostService postService
+@inject ICommentService commentService
+@inject IUserService userService
+
+@if (posts == null || post ==null)
+{
+    <span>Loading..</span>
+}
+else if (!posts.Any())
+{
+    <p>No Post to display</p>
+}
+else
+{
+
+    <div>
+        <p>Author: @post.Author.UserName</p>
+        <p>Title: @post.Title</p>
+        <p>Content: @post.Body</p>
+        @if (comments != null)
+        {
+            @foreach (var commentItem in comments)
+            {
+                        <p>@commentItem.Author.UserName : @commentItem.Body</p>
+            }
+        }
+        <hr>
+    </div>
+@if (users == null)
+{
+    <span>Loading..</span>
+}
+else if (!users.Any())
+{
+    <p>No Users to display</p>
+}
+else
+{
+    <h3>Add Comment</h3>
+    <div class="form-group field">
+        <label>Body:</label>
+        <input type="text" @bind="comment" />
+    </div>
+    <div class="form-group field">
+        <label>Assignee:</label>
+        <select @bind="selectedUserId" >
+            <option>Choose</option>
+            @foreach (User user in users)
+            {
+                <option value="@user.Id">@user.UserName</option>
+            }
+        </select>
+    </div>
+    <div class="button-row">
+        @if (!string.IsNullOrEmpty(msg))
+        {
+            <label style="color: red">@msg</label>
+        }
+        <button @onclick="Create" class="acceptbtn">Create</button>
+    </div>
+}
+}
+
+@code {
+    [Parameter]
+    public int childId { get; set; }
+    private IEnumerable<Post>? posts;
+    private Post? post;
+    private IEnumerable<Comment>? comments;
+    private string msg = "";
+    private IEnumerable<User>? users;
+    
+    private int? selectedUserId;
+    private string comment = "";
+    
+    protected override async Task OnInitializedAsync()
+    {
+        msg = "";
+        try
+        {
+            posts = await postService.GetAsync(null, null, null, null);
+            foreach (var item in posts)
+            {
+                if (item.Id==childId)
+                {
+                    post = item;
+                }
+            }
+            comments = await commentService.GetAsync(null, null, null, null, post.Id);
+            users = await userService.GetUsersAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+    
+    private async Task Create()
+    {
+        msg = "";
+        if (selectedUserId == null)
+        {
+            msg = "You must select an assignee!";
+            return;
+        }
+        if (string.IsNullOrEmpty(comment))
+        {
+            msg = "Post's Body be empty!";
+            return;
+        }
+        try
+        {
+            CommentCreateDto dto = new((int)selectedUserId, childId, comment);
+            await commentService.CreateAsync(dto);
+            comments = await commentService.GetAsync(null, null, null, null, post.Id);
+            comment = "";
+            selectedUserId = null;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            msg = e.Message;
+        }
+    }
+}

@@ -6,6 +6,7 @@
 @inject IPostService postService
 @inject ICommentService commentService
 @inject NavigationManager navMgr
+@inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
 
 <h3>Posts</h3>
 
@@ -60,19 +61,7 @@ else
         <div>
             <p>Author: @item.Author.UserName</p>
             <p>Title: @item.Title</p>
-            <p>Content: @item.Body</p>
-             @if (comments != null)
-             {
-                @foreach (var comment in comments)
-                {
-                    if (comment.Reference.Id == item.Id)
-                    {
-                        <div>
-                            <p>@comment.Author.UserName :  @comment.Body</p>
-                        </div>
-                    }
-                }
-             }
+             <p><button @onclick="@(() => GoToPost(item))">View</button></p>
             <hr>
         </div>
     }
@@ -110,7 +99,7 @@ else
         try
         {
             posts = await postService.GetAsync(null, null, null, null);
-            comments = await commentService.GetAsync(null, 1, null, null, null);
+            comments = await commentService.GetAsync(null, null, null, null, null);
         }
         catch (Exception e)
         {
@@ -131,6 +120,23 @@ else
         {
             Console.WriteLine(e);
             msg = e.Message;
+        }
+    }
+
+    public void GoToPost(Post? post)
+    {
+        if (post!=null)
+        {
+            try
+            {
+                int id = post.Id;
+                navMgr.NavigateTo($"/ViewPost/{id}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                msg = e.Message;
+            }
         }
     }
 }
