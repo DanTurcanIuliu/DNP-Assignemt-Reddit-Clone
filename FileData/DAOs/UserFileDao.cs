@@ -47,6 +47,23 @@ public class UserFileDao : IUserDao, IUserProvider
         return Task.FromResult(existing);
     }
 
+    public Task<User> ValidateUser(string username, string password)
+    {
+        User existingUser = context.Users.First(u => u.UserName.Equals(username));
+        
+        if (existingUser == null)
+        {
+            throw new Exception("User not found");
+        }
+
+        if (!existingUser.Password.Equals(password))
+        {
+            throw new Exception("Password mismatch");
+        }
+
+        return Task.FromResult(existingUser);
+    }
+
     public Task<IEnumerable<User>> GetAsync(SearchUserParametersDto searchParameters)
     {
         IEnumerable<User> users = context.Users.AsEnumerable();

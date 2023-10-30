@@ -8,4 +8,6 @@ public interface IUserDao
     Task<User?> GetByUsernameAsync(string userName);
     
     Task<User?> GetByIdAsync(int id);
+
+    Task<User> ValidateUser(string username, string password);
 }
