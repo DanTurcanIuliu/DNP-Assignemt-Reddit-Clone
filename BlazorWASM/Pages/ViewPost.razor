@@ -2,10 +2,14 @@
 @using HttpClients.ClientInterfaces
 @using global::Shared.Models
 @using global::Shared.DTOs
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
 @inject IPostService postService
 @inject ICommentService commentService
 @inject IUserService userService
-
+@attribute [Authorize]
+<AuthorizeView>
+    <Authorized>
 @if (posts == null || post ==null)
 {
     <span>Loading..</span>
@@ -46,15 +50,8 @@ else
         <input type="text" @bind="comment" />
     </div>
     <div class="form-group field">
-        <label>Assignee:</label>
-        <select @bind="selectedUserId" >
-            <option>Choose</option>
-            @foreach (User user in users)
-            {
-                <option value="@user.Id">@user.UserName</option>
-            }
-        </select>
-    </div>
+                @(selectedUserName = context.User.Identity.Name)
+            </div>
     <div class="button-row">
         @if (!string.IsNullOrEmpty(msg))
         {
@@ -64,7 +61,8 @@ else
     </div>
 }
 }
-
+    </Authorized>
+</AuthorizeView>
 @code {
     [Parameter]
     public int childId { get; set; }
@@ -73,6 +71,7 @@ else
     private IEnumerable<Comment>? comments;
     private string msg = "";
     private IEnumerable<User>? users;
+    private string? selectedUserName;
     
     private int? selectedUserId;
     private string comment = "";
@@ -103,6 +102,13 @@ else
     private async Task Create()
     {
         msg = "";
+        foreach (var user in users)
+        {
+            if (user.UserName == selectedUserName)
+            {
+                selectedUserId = user.Id;
+            }
+        }
         if (selectedUserId == null)
         {
             msg = "You must select an assignee!";

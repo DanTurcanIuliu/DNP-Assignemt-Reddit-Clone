@@ -3,11 +3,11 @@
 @using HttpClients.ClientInterfaces
 @using global::Shared.Models
 @using System.Runtime.CompilerServices
+@using Microsoft.AspNetCore.Authorization
 @inject IPostService postService
 @inject ICommentService commentService
 @inject NavigationManager navMgr
 @inject Microsoft.AspNetCore.Components.NavigationManager navigationManager
-
 <h3>Posts</h3>
 
 <div class="filter-bar">

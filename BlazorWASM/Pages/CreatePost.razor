@@ -2,12 +2,16 @@
 @using HttpClients.ClientInterfaces
 @using global::Shared.Models
 @using global::Shared.DTOs
-
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.Authorization
+@attribute [Authorize]
 
 @inject IUserService userService
 @inject IPostService postService
+@inject IAuthService authService
 @inject NavigationManager navMgr
-
+<AuthorizeView>
+    <Authorized>
 <div class="card">
     @if (users == null)
     {
@@ -29,14 +33,7 @@
             <input type="text" @bind="postBody"/>
         </div>
         <div class="form-group field">
-            <label>Assignee:</label>
-            <select @bind="selectedUserId">
-                <option>Choose</option>
-                @foreach (User user in users)
-                {
-                    <option value="@user.Id">@user.UserName</option>
-                }
-            </select>
+            @(selectedUserName = context.User.Identity.Name)
         </div>
         <div class="button-row">
             @if (!string.IsNullOrEmpty(msg))
@@ -47,14 +44,18 @@
         </div>
     }
 </div>
-
+    </Authorized>
+</AuthorizeView>
 
 @code {
     private IEnumerable<User>? users;
     private int? selectedUserId;
+    private string? selectedUserName;
     private string postTitle = "";
     private string postBody = "";
     private string msg = "";
+    
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -72,6 +73,13 @@
 
     private async Task Create()
     {
+        foreach (var user in users)
+    {
+        if (user.UserName == selectedUserName)
+        {
+            selectedUserId = user.Id;
+        }
+    }
         msg = "";
         if (selectedUserId == null)
         {
@@ -89,6 +97,8 @@
             msg = "Post's Body be empty!";
             return;
         }
+
+        
 
         try
         {

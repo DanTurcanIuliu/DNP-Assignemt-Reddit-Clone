@@ -47,7 +47,7 @@
         try
         {
             await authService.LoginAsync(userName, password);
-            navMgr.NavigateTo("/");
+            navMgr.NavigateTo("/ViewPosts");
         }
         catch (Exception e)
         {
