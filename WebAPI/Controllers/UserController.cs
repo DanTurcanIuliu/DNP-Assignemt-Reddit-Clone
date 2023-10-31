@@ -11,7 +11,6 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace WebAPI.Controllers;
 
-
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
