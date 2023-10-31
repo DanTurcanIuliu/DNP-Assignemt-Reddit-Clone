@@ -1,0 +1,42 @@
+﻿@using HttpClients.ClientInterfaces
+@inherits LayoutComponentBase
+@inject NavigationManager navMgr
+@inject IAuthService authService
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu/>
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <AuthorizeView>
+                <Authorized>
+                    <img class="icon" src="icons/Logout.png" @onclick="Logout" alt="Logout"/>
+                </Authorized>
+                <NotAuthorized>
+                    <img class="icon" src="icons/Login.png" @onclick="Login" alt="Login"/>
+                </NotAuthorized>
+            </AuthorizeView>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+@code {
+
+    private void Login()
+    {
+        navMgr.NavigateTo("/Login");
+    }
+
+    private async Task Logout()
+    {
+        await authService.LogoutAsync();
+        navMgr.NavigateTo("/Login");
+    }
+
+}
