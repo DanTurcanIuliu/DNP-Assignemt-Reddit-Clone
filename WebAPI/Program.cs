@@ -3,8 +3,8 @@ using Application.Dao_Interfaces;
 using Application.Logic;
 using Application.Logic_Interfaces;
 using Application.Provider_Interfaces;
-using FileData;
-using FileData.DAOs;
+using EfcDataAccess;
+using EfcDataAccess.DAOs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Authorization;
@@ -18,19 +18,19 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<FileContext>();
+builder.Services.AddDbContext<MyPostContext>();
 
-builder.Services.AddScoped<IUserDao, UserFileDao>();
+builder.Services.AddScoped<IUserDao, UserEfcDao>();
 builder.Services.AddScoped<IUserLogic, UserLogic>();
-builder.Services.AddScoped<IUserProvider, UserFileDao>();
+builder.Services.AddScoped<IUserProvider, UserEfcDao>();
 
-builder.Services.AddScoped<IPostDao, PostFileDao>();
+builder.Services.AddScoped<IPostDao, PostEfcDao>();
 builder.Services.AddScoped<IPostLogic, PostLogic>();
-builder.Services.AddScoped<IPostProvider, PostFileDao>();
+builder.Services.AddScoped<IPostProvider, PostEfcDao>();
 
-builder.Services.AddScoped<ICommentDao, CommentFileDao>();
+builder.Services.AddScoped<ICommentDao, CommentEfcDao>();
 builder.Services.AddScoped<ICommentLogic, CommentLogic>();
-builder.Services.AddScoped<ICommentProvider,CommentFileDao>();
+builder.Services.AddScoped<ICommentProvider,CommentEfcDao>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {

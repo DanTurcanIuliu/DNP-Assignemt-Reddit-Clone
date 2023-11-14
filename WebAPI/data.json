@@ -1,0 +1,76 @@
+{
+  "Users": [
+    {
+      "Id": 1,
+      "Password": "1234",
+      "UserName": "Dan123",
+      "Posts": null
+    },
+    {
+      "Id": 2,
+      "Password": "pppp",
+      "UserName": "pppp",
+      "Posts": null
+    }
+  ],
+  "Posts": [
+    {
+      "Id": 1,
+      "Author": {
+        "Id": 1,
+        "Password": "1234",
+        "UserName": "Dan123",
+        "Posts": null
+      },
+      "Title": "Math",
+      "Body": "I like maths",
+      "Comments": null
+    }
+  ],
+  "Comments": [
+    {
+      "Id": 1,
+      "Author": {
+        "Id": 1,
+        "Password": "1234",
+        "UserName": "Dan123",
+        "Posts": null
+      },
+      "Reference": {
+        "Id": 1,
+        "Author": {
+          "Id": 1,
+          "Password": "1234",
+          "UserName": "Dan123",
+          "Posts": null
+        },
+        "Title": "Math",
+        "Body": "I like maths",
+        "Comments": null
+      },
+      "Body": "ura"
+    },
+    {
+      "Id": 2,
+      "Author": {
+        "Id": 2,
+        "Password": "pppp",
+        "UserName": "pppp",
+        "Posts": null
+      },
+      "Reference": {
+        "Id": 1,
+        "Author": {
+          "Id": 1,
+          "Password": "1234",
+          "UserName": "Dan123",
+          "Posts": null
+        },
+        "Title": "Math",
+        "Body": "I like maths",
+        "Comments": null
+      },
+      "Body": "yes"
+    }
+  ]
+}
